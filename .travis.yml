@@ -1,0 +1,42 @@
+sudo: required # will need superuser permission to execute this build
+services:
+  # will need docker-cli preinstall
+  # travis will add supoort to docker to ou
+  - docker
+
+before_install:
+  - docker build  -t umeshvjti/multi-react -f ./client/Dockerfile.dev ./client
+  # if output status code is not 0 then tests are failing
+  # umeshvjti/multi-react is tag name
+script:
+  - docker run umeshvjti/multi-react npm run test -- --coverage
+
+after_success:
+  #                                         build context and willl use default Dockerfile
+  - docker build -t umeshvjti/multi-client ./client
+  - docker build -t umeshvjti/multi-nginx ./nginx
+  - docker build -t umeshvjti/multi-server ./server
+  - docker build -t umeshvjti/multi-worker ./worker
+  # login to Docker cli
+  - echo "$DOCKER_PWD" | docker login -u "$DOCKER_ID" --password-stdin
+  # take images and push to docker hub
+  - docker push umeshvjti/multi-client
+  - docker push umeshvjti/multi-nginx
+  - docker push umeshvjti/multi-server
+  - docker push umeshvjti/multi-worker
+
+
+
+#
+#deploy:
+#  provider: elasticbeanstalk # travis ci comes pre configured to deploy application on aws EB
+#  region: "us-east-2" # region fow aws EB instance created in
+#  app: "docker-react" # aws EB application name
+#  env: "DockerReact-env" # aws environment name of application
+#  bucket_name: "elasticbeanstalk-us-east-2-131341973928" # s3 bucket where repo zip file is stored by travis
+#  bucket_path: "docker-react" # folder name in bucket
+#  on:
+#    branch: master # deploy only when new code is pushed to master
+#  access_key_id: $AWS_ACCESS_KEY # get the value from enviroment variable which is set in travis ci dashboard
+#  secret_access_key:
+#    secure: "$AWS_SECRET_KEY"
