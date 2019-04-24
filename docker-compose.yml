@@ -1,0 +1,47 @@
+version: "3" # version of docker compose to user
+services:
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev # dockerfile to use to create an image
+      context: ./nginx
+    ports:
+      - '3050:80'
+  postgres:
+    image: 'postgres:latest'
+  redis:
+    image: 'redis:latest'
+  api:
+    build:
+      dockerfile: Dockerfile.dev # dockerfile to use to create an image
+      context: ./server # where files to come from
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PGUSER=postgres
+      - PGHOST=postgres
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
+  client:
+    build:
+      dockerfile: Dockerfile.dev # dockerfile to use to create an image
+      context: ./client # where files to come from
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+  worker:
+    build:
+      dockerfile: Dockerfile.dev # dockerfile to use to create an image
+      context: ./worker # where files to come from
+    volumes:
+      - /app/node_modules
+      - ./worker:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+
+
