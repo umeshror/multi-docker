@@ -25,18 +25,15 @@ after_success:
   - docker push umeshvjti/multi-server
   - docker push umeshvjti/multi-worker
 
-
-
-#
-#deploy:
-#  provider: elasticbeanstalk # travis ci comes pre configured to deploy application on aws EB
-#  region: "us-east-2" # region fow aws EB instance created in
-#  app: "docker-react" # aws EB application name
-#  env: "DockerReact-env" # aws environment name of application
-#  bucket_name: "elasticbeanstalk-us-east-2-131341973928" # s3 bucket where repo zip file is stored by travis
-#  bucket_path: "docker-react" # folder name in bucket
-#  on:
-#    branch: master # deploy only when new code is pushed to master
-#  access_key_id: $AWS_ACCESS_KEY # get the value from enviroment variable which is set in travis ci dashboard
-#  secret_access_key:
-#    secure: "$AWS_SECRET_KEY"
+deploy:
+  provider: elasticbeanstalk # travis ci comes pre configured to deploy application on aws EB
+  region: "us-east-2" # region fow aws EB instance created in
+  app: "docker-complex" # aws EB application name
+  env: "DockerComplex-env" # aws environment name of application
+  bucket_name: "elasticbeanstalk-us-east-2-131341973928" # s3 bucket where repo zip file is stored by travis
+  bucket_path: "docker-complex" # folder name in bucket
+  on:
+    branch: master # deploy only when new code is pushed to master
+  access_key_id: $AWS_ACCESS_KEY # get the value from enviroment variable which is set in travis ci dashboard
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
