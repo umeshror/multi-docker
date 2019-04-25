@@ -13,7 +13,7 @@ RUN npm run build
 
 # RUN phase
 FROM nginx
-EXPOSE 3050
+EXPOSE 3000
 # elastcibean or silimar will use this as port that get mapped for incoming traffic
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/build /usr/share/nginx/html
