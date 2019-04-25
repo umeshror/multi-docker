@@ -12,7 +12,7 @@ script:
   - docker run umeshvjti/multi-react npm run test -- --coverage
 
 after_success:
-  #                                         build context and willl use default Dockerfile
+  #                                         build context and will use default Dockerfile
   - docker build -t umeshvjti/multi-client ./client
   - docker build -t umeshvjti/multi-nginx ./nginx
   - docker build -t umeshvjti/multi-server ./server
