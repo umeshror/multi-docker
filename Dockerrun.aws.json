@@ -1,40 +1,44 @@
 {
-   "AWSEBDockerrunVersion": 2,
-   "containerDefinitions":  [
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
     {
-       "name": "client",
-       "image": "umeshvjti/multi-client",
-       "hostname": "client",
-       "essential": false,
-       "memory": 128
+      "name": "client", // name which will be shown on dashboard of aws
+      "image": "umeshvjti/multi-client", // get this image from dockerhub
+      "hostname": "client", // hostname which will be used erywhere to acess this container
+      "essential": false,  // if true and crahes then all other container will shut down | at least one need to be true
+      "memory": 128
     },
     {
-       "name": "server",
-       "image": "umeshvjti/multi-server",
-       "hostname": "api",
-       "essential": false,
-       "memory": 128
+      "name": "server",
+      "image": "umeshvjti/multi-server",
+      "hostname": "api",
+      "essential": false,
+      "memory": 128
     },
     {
-       "name": "worker",
-       "image": "umeshvjti/multi-worker",
-       "hostname": "worker",
-       "essential": false,
-       "memory": 128
+      "name": "worker",
+      "image": "umeshvjti/multi-worker",
+      "hostname": "worker",
+      "essential": false,
+      "memory": 128
     },
     {
-       "name": "nginx",
-       "image": "umeshvjti/multi-server",
-       "hostname": "nginx",
-       "essential": true,
-       "portMappings": [
+      "name": "nginx",
+      "image": "umeshvjti/multi-server",
+      "hostname": "nginx", // optional as no one is going to use
+      "essential": true,
+      "portMappings": [
         {
-            "hostPort": 80,
-            "containerPort": 80
+          "hostPort": 80, // outside  : listen to port 80
+          "containerPort": 80 // inside : forword it to container at port 80
         }
-        ],
-        "links":["client", "server"],
-       "memory": 128
-     }
-   ]
+      ],
+      // link it from nginx to client and server
+      "links": [
+         "client",
+        "server"
+      ],
+      "memory": 128
+    }
+  ]
 }

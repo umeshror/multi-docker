@@ -1,4 +1,4 @@
-version: "3" # version of docker compose to user
+version: "3" # version of docker compose to use
 services:
   nginx:
     restart: always
@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile.dev # dockerfile to use to create an image
       context: ./nginx
     ports:
-      - '3050:80'
+      - '3050:80' # local machine: inside container
   postgres:
     image: 'postgres:latest'
   redis:
@@ -19,10 +19,10 @@ services:
       - /app/node_modules
       - ./server:/app
     environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - REDIS_HOST=redis   # sync with line number 12
+      - REDIS_PORT=6379    # default port
       - PGUSER=postgres
-      - PGHOST=postgres
+      - PGHOST=postgres    # service name line no 10
       - PGDATABASE=postgres
       - PGPASSWORD=postgres_password
       - PGPORT=5432

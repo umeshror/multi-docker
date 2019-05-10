@@ -17,7 +17,7 @@ after_success:
   - docker build -t umeshvjti/multi-nginx ./nginx
   - docker build -t umeshvjti/multi-server ./server
   - docker build -t umeshvjti/multi-worker ./worker
-  # login to Docker cli
+  # login to Docker cli where environment vars will be taken from travis
   - echo "$DOCKER_PWD" | docker login -u "$DOCKER_ID" --password-stdin
   # take images and push to docker hub
   - docker push umeshvjti/multi-client
